@@ -1,0 +1,15 @@
+{
+  "nombre": "PEPE",
+  "edad": 50,
+  "casado": true,
+  "asignaturas": ["Programacion", "Marcas"],
+  "enemigo": null,
+  "altura": 1.77,
+  "dreccion": {
+    "Pais": "España",
+    "Provincia": "Pontevedra",
+    "Ciudad": "Vigo",
+    "Calle": "Hispanidad 33",
+    "CodigoPostal": 36203
+  }
+}
