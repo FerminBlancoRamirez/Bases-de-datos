@@ -1,0 +1,16 @@
+//mostrar datos condicionados $cond
+db.alumnos.aggregate(
+  {$project:{
+    _id:0,
+    nombre:1,
+    edad:1,
+    esMayorEdad:{
+      $cond:{
+        if:{$gte:["$edad", 21]},
+        then:"Es mayor de edad",
+        else:"Es menor de edad"
+      }
+    }
+  }}
+)
+

@@ -1,0 +1,15 @@
+//indice simple
+db.alumnos.createIndex({email.1})
+
+//indice siendo unico
+db.alumnos.createIndex(
+    {_id:1},
+    {unique:true}
+)
+
+//indice con categoria(compuesto)
+db.cursos.createIndex({nombre:1, categoria:1})
+
+//para ver todos los indices
+db.alumnos.getIndex()
+

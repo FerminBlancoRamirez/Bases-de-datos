@@ -1,0 +1,75 @@
+//1)mostrar los alumnos no activos
+db.alumnos.aggregate([
+  {$project:{activo:false}}
+])
+
+//2)mostrar solo nombre y departament de cada profesor
+db.profesores.aggregate([
+  {$project:{nombre:1, departamento:1, _id:0}}
+])
+
+//3)mostrar profesores con salarios superiores a 2000E
+db.profesores.aggregate([
+  {$match:{salario:{$gt:2000}}}
+])
+
+//4) Mostrar los profesores (nombre, apellidos y salario) y tambien
+mostrar el salario con un descuento del 2%
+db.profesores.aggregate(
+  {$project:{
+    _id:0,
+    nombre:1,
+    apellidos:1,
+    salario:1,
+    salarioDescuento:{$multiply:{salario,0.98}}
+  }}
+)
+
+//5) Contar cuantos profesores hay por cada departamento
+db.profesores.aggregate([
+  {$group:{
+    _id:"$departamento",
+    numero:{$sum:1}
+  }}
+])
+
+//6) Calcular la media del sario de los profesores
+db.profesores.aggregate([
+  {$group:{
+    _id:null,
+    media:{$avg:"$salario"}
+  }}
+])
+
+//7) Muestra los profesores ordenando por los que mas ganan a los que menos
+db.profesores.aggregate([
+  {$sort:{salario:1}}
+])
+
+//8) Mostrar los 2 profesores que menos ganan
+db.profesores.aggregate([
+  {$sort:{salario:1}},
+  {$limit:2}
+])
+
+//9) Cuenta cuantas veces aparece cada hobby (pista: unwind y group)
+db.alumnos.aggregate([
+  {$unwind:"$hobbies"},
+  {$group:{
+    _id:"$hobbies",
+    numero:{$sum:1}
+  }}
+])
+
+//10) Muestra los datos de la matricula y el curso (join)
+db.matriculas.aggregate([
+  {$lookup:{
+    from: "cursos",
+    localField:"nombre",
+    foreignField:"cursoNombre",
+    as:"informacion"
+  }}
+])
+
+//11) Muestra la media de notas por modulo solo de los alumnos activos
+
