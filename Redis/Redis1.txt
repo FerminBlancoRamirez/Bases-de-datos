@@ -1,0 +1,159 @@
+
+// --CADENAS--
+//Guardar una variable
+set nombre "Paula"
+
+//Acceder a esa variable
+get nombre
+
+//Guardar una variable numerica
+set cantidad 2
+
+//incrementar valor de cantidad
+incr cantidad //devuelve 3
+
+//Añadir a una variable al final
+append nombre " Gonzalez"
+
+//crear variable temporal
+setex codigoFichaje 5(tiempo) "HJT6"(valor) // la clave solo existe en el sistema 5 segundo
+
+//hacer que una variable fija caduque
+set precio 30 //creas la variable fija
+expire precio 10 //haces que la variable tenga tiempo de expiracion
+
+//Te arrepientes y quieres que persista la variable
+persist precio //tiene que ser antes de que la variable muera
+
+
+//--LISTAS(ELEMENTOS ORDENADOS POR ORDEN DE INSERCCION)--
+//Crear e introducir valores en una lista
+lpush(introduce por la izquierda) tarea(nombre de la lista) "comer"
+lpush tarea "dormir"
+lpush tarea "ducharse"
+rpush(introduce por la derecha) tarea "estudiar"
+
+//ver cuantos elementos tienes en la lista
+llen tarea//te dice cuantos elementos tienes en la lista
+
+//ver los elementos de la lista
+lrange tarea 0 -1(llega al final del todo)
+
+//sacar un elemento de la lista
+lpop tarea //saca el primero de la lista pero le puedes decir cual quieres sacar
+rpop tarea// saca el ultimo elemento de la lista
+
+
+//--CONJUNTOS(SETS)(ELEMENTOS NO ORDENADOS)(SIN DUPLICADOS)--
+//crear y añadir elementos en un conjunto
+sadd participantes(nombre de conjunto) "Ana"(elemento añadido sinn orden)
+
+//Ver elemento del conjunto
+smemebers participantes
+
+//Ver si algo existe en el conjunto
+sismemeber participantes "Alvaro"// devuelve boolean (0 o 1)
+
+//Sacar elemento del conjunto
+srem participantes "Hector" //devuelve booleano
+
+//Ver diferencia entre dos set
+sdiff participantes arbitros //te da nombre de los diferentes elementos,
+                             //te dira los nombres del primer conjunto que no aparecen en el segundo
+
+//Ver interseccion de ambos conjuntos
+sinter participantes arbitros //te devuelve el nombre de la interseccion(el que aparece en ambos conjuntos)
+
+
+//--ZSETS(IGUAL QUE UN SET)(CONJUNTOS ORDENADOS)(LOS ORDENO YO)--
+//Crear y añadir conjunto ordenado
+zadd ranking 100(dato por el que se ordena) "Juan"
+zadd ranking 150 "Luis"
+zadd ranking 75 "Carlos"
+
+//Mostrar el conjunto ordenado
+zrange ranking 0 -1 // te muestra del menor al mayor
+zrevrange ranking 0 -1// te muestra de mayor a menor
+
+//Trabajar con las puntuaciones(incrementar la puntuacion de un valor el conjunto)
+zincrby ranking 80(valor que le sumas) "Luis"
+
+
+//--HASHES(ALMACENAN CONJUNTOS DE PARES CAMPO-VALOR)--
+//Crear y añadir valores
+hset user nombre "Pepe"
+hset user edad 50
+hset user telefono 666666666
+
+//Añadir multiples valores
+hset user:1(aqui diferencias las cosas) nombre "Pepe"
+hset user:1 edad 50
+hset user:2 nombre "Antonio"
+hset user:2 edad 40
+
+//Borrar elementos
+hdel user nombre
+hdel user edad
+hdel useer telefono
+
+//Ver valores uno por uno
+hget user: 1 nombre
+
+//Ver todos los valores
+hgetall user:1
+
+//Ver cuantos campos tienes
+hlen user:1(solo el usuario 1)
+
+//incrementar un valor
+hincrby user:2 edad 2(le sumas dos años a Antonio)
+
+
+//--BITMAPS(TRABAJAR DIRECTAMENTE CON BITS)(PODEMOS CAMBIAR DE UNA ESTRUCTURA SUS BITS)--
+//Crear y añadir(se usa bit)
+setbit lienzo 2(bit a modificar) 1(bit modificado) //por defecto crea el mapa con todo a 0
+
+//Ver un bit en especifico
+getbit lienzo 0(posicion que le pides para ver) // devuelve 0 hasta que le pides bit 2 y te muestra 1
+                                                //ya que lo modificaste anteriormente
+
+//ver numeros de bit modificados
+bitcount lienzo
+
+
+//--HYPERLOGLOG(CUENTA DE FORMA APROXIMADA ELEMENTOS UNICOS MUY EFICIENTE)--
+//Crear y añadir
+pfadd usuarios(key) "Juan"
+pfadd usuarios(key) "Antonio"
+pfadd usuarios(key) "Antonio"
+pfadd usuarios(key) "Ana"
+
+//Ver cuantos elementos unicos tienes
+pfcount usuarios // te devuelve 3 ya que Antonio esta repetido
+
+
+//--GEO(SIRVE PARA TRABAJAR CON COORDENADAS Y HACE CALCULOS ENTRE ELLAS)--
+//crear localizacion por latitud y lonitud
+geoadd ciudades 42.2 -8.7 "Vigo"
+geoadd ciudades 43.3 -8.4 "Coruña"
+geoadd ciudades 40.9 -5.6 "Salamanca"
+
+//Ver que distancia hay entre dos cosas
+geodist ciudades "Vigo" "Coruña" KM(importante la mayuscula)// te dice la distancia en kilometros
+
+//Ver elementos al rededor de algo dadas latitud y longitud
+georadius ciudades 42.1 -8.6 30 KM //te dira lo que hay al rededor de las ciudades que introdujiste
+                                   //en este caso diria VIGO
+
+//Ver coordenadas de un elemento
+geopos ciudades "Vigo" // te devuelve: "42.20000177621841431" "-8.70000074419444047"
+
+
+
+//--STREAMS (FLUJOS DE DATOS O EVENTOS QUE OCURREN QUE GUARDO)(ORDENADOS POR ORDEN DE LLEGADA Y CON ID UNICO)--
+//crear y añadir evento
+xadd estado_paciente 450(id manual)(con * genera id) latido(key) 80 //esto si solo tienes un paciente
+xadd estado_paciente:1 * latido 80 //varios pacientes
+
+//ver los elementos
+xrange estado_paciente - +(ya que trabajamos con ids y son numeros grandes) COUNT 10(limitas las apariciones de los eventos)
