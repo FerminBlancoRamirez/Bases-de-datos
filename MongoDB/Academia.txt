@@ -1,0 +1,116 @@
+//1- Crea el diagrama de bd
+
+
+//2- Realiza estas consultas fáciles
+
+
+//1)Mostrar todos los estudiantes
+db.estudiantes.find()
+
+
+//2)Mostrar datos del estudiante Ana Pérez
+db.estudiantes.find({nombre:"Ana Perez"})
+
+//3)Listar todos los cursos
+db.cursos.find()
+
+//4)Mostrar todos los profesores de Matemáticas
+db.profesores.find({especialidad:"Matemáticas"})
+
+//5)Contar cuántos estudiantes hay en total
+db.estudiantes.countDocuments()
+
+
+
+3- Realiza estas consultas de nivel medio
+
+//6)Listar los cursos con su profesor asignado
+db.cursos.aggregate([
+  {$lookup:{
+    from:"profesores",
+    localField:"profesor_id",
+    foreignField:"_id",
+    as:"cursos_profesores"
+  }},
+  {$project:{
+    _id:0, titulo:1, "cursos_profesores.nombre":1
+  }}
+])
+
+//7)Mostrar todos los estudiantes inscritos en algún curso
+db.inscripciones.aggregate([
+  {$lookup:{
+    from:"estudiantes",
+    localField:"estudiante_id",
+    foreignField:"_id",
+    as:"estudiante_inscrito"
+  }},
+  {$project:{_id:0,"estudiante_inscrito.nombre":1}}
+])
+//8)Mostrar todos los cursos con el número de estudiantes inscritos
+No se hacerlo, creo que tienes que unir las tres trablas y luego hacer magia con ellas
+//9)Listar los profesores que imparten más de un curso
+db.cursos.aggregate([
+  {$group:{
+    _id:"$profesor_id",
+    total_cursos:{$sum:1}
+  }},
+  {$match:{
+    total_cursos:{$gt:1}
+  }},
+  {$lookup:{
+    from:"profesores",
+    localField:"profesor_id",
+    foreignField:"_id",
+    as:"profesores_cursos"
+  }},
+  {$project:{
+    total_cursos:1, "profesores_cursos.nombre":1
+  }}
+])
+
+(Me funciona pero no se como hacer para que me muestre el nombre del profesor)
+//10)Obtener los cursos a los que está inscrita "Ana Pérez"
+db.cursos.aggregate([
+  {$lookup:{
+    from:"profesores",
+    localField:"profesor_id",
+    foreignField:"_id",
+    as:"cursos"
+  }},
+  {$match:{
+    "cursos.nombre":"Ana Pérez"
+  }},
+  {$project:{
+    _id:0, titulo:1
+  }}
+])
+
+4- Realiza estas consultas de nivel difícil
+
+//11)Listar todos los estudiantes inscritos en un curso concreto "Álgebra I"
+db.inscripciones.aggregate([
+  {$lookup:{
+    from:"cursos",
+    localField:"curso_id",
+    foreignField:"_id",
+    as:"cursos"
+  }},
+  {$lookup:{
+    from:"estudiantes",
+    localField:"estudiante_id",
+    foreignField:"_id",
+    as:"estudiantes"
+  }},
+  {$match:{
+    "cursos.titulo":"Álgebra I"
+  }},
+  {$project:{
+    _id:0, "estudiantes.nombre":1
+  }}
+])
+
+//12)Contar cuántos estudiantes tiene cada curso
+Lo mismo que en la consulta 8 no se hacerlo
+
+//13)Sacar el porcentaje de asistencias por estudiante en un curso espec
