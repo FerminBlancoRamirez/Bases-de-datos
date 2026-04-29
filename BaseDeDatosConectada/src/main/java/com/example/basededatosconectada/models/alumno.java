@@ -6,7 +6,6 @@ public class alumno {
     private ObjectId id;
     private String nombre;
     private String apellidos;
-    private int edad;
 
     // Constructor vacío necesario para frameworks
     public alumno() {}
