@@ -1,0 +1,160 @@
+Ejercicio de Redis
+1. CLAVE-VALOR (Cadenas)
+Ejercicio: Sistema de visitas a una web
+//1)Guarda un número inicial de visitas (por ejemplo 10).
+set mum_inicial_visitas 10
+
+//2)Muestra el número de visitas.
+get num_inicial_visitas
+
+//3)Incrementa el contador en 1.
+incr num_inicial_visitas
+
+//4)Añade texto al valor (por ejemplo “_total”).
+append cantidad " total"
+
+//5)Guarda un código que caduque en 60 segundos.
+setex codigo 60 "TEMP"
+
+//6)Haz que la clave de visitas expire en 2 minutos.
+expire num_inicial_visitas 120
+
+//7)Elimina la expiración de la clave.
+persist num_inicial_visitas
+
+2. LISTAS
+Ejercicio: Cola de tareas
+//1)Inserta varias tareas al inicio y al final de la lista.
+lpush tareas "nacer"
+lpush tareas "comer"
+rpush tareas "morir"
+
+//2)Muestra el número total de tareas.
+llen tareas
+
+//3)Elimina la primera tarea.
+lpop tareas
+
+//4)Elimina la última tarea.
+rpop tareas
+
+//5)Muestra todas las tareas restantes.
+lrange tareas 0 -1
+
+3. SETS (sin duplicados)
+Ejercicio: Gestión de alumnos
+//1)Añade varios alumnos a un conjunto.
+sadd alumnos "Ana"
+sadd alumnos "Alvaro"
+sadd alumnos "Carlos"
+
+//2)Intenta añadir un alumno repetido.
+sadd alumnos "Alvaro"
+
+//3)Muestra todos los alumnos.
+smembers alumnos
+
+//4)Comprueba si un alumno está en el conjunto.
+sismember alumnos "Alvaro"
+
+//5)Elimina un alumno.
+srem alumnos "Ana"
+
+//6)Crea un segundo conjunto con otros alumnos.
+sadd alumnos2 "Hector"
+sadd alumnos2 "Manu"
+sadd alumnos2 "Anxo"
+Obtén:
+//6.1)los alumnos que están solo en el primero
+srem alumnos
+
+//6.2)los alumnos comunes a ambos conjuntos
+sdiff alumnos alumnos2 // NO DA NINGUNO PORQUE NO HAY COINCIDENCIAS
+
+4. ZSETS (ordenados)
+Ejercicio: Ranking de jugadores
+//1)Añade varios jugadores con puntuaciones.
+zadd ranking 100 "Alvaro"
+zadd ranking 200 "Hector"
+zadd ranking 250 "Manu"
+
+//2)Muestra el ranking de menor a mayor puntuación.
+zrange ranking 0 -1
+
+//3)Muestra el ranking de mayor a menor.
+zrevrange ranking 0 -1
+
+//4)Incrementa la puntuación de un jugador.
+zincrby ranking 80 "Alvaro"
+
+5. HASHES
+Ejercicio: Perfil de usuario
+//1)Crea un usuario con nombre, edad y puntos.
+hset user:1 nombre "Alvaro"
+hset user:1 edad 20
+hset user:1 punto 120
+
+//2)Obtén el nombre del usuario.
+hget user:1 nombre
+
+//3)Obtén todos los datos del usuario.
+hgetall user:1
+
+//4)Cuenta cuántos campos tiene el usuario.
+hlen user:1
+
+//5)Incrementa los puntos del usuario.
+hincrby user:1 puntos
+
+6. BITMAPS
+Ejercicio: Control de asistencia
+//1)Marca asistencia (1) y ausencia (0) para varios días.
+setbit asistencia 1 1
+setbit asistencia 1 1
+setbit asistencia 0 3
+setbit asistencia 0 4
+
+//2)Consulta si un día concreto asistió.
+getbit asistencia 1
+
+//3)Cuenta el número total de días asistidos.
+bitcount asistecia
+
+7. HYPERLOGLOG
+ Ejercicio: Usuarios únicos
+//1)Añade varios usuarios a un contador.
+pfadd usuarios "Alvaro"
+pfadd usuarios "Hector"
+pfadd usuarios "Carlos"
+pfadd usuarios "Anxo"
+
+//2)Intenta añadir usuarios repetidos.
+pfadd usuarios "Alvaro"
+
+//3)Obtén el número aproximado de usuarios únicos.
+pfcount usuarios
+
+8. GEO
+Ejercicio: Localización de tiendas
+//1)Añade varias tiendas con coordenadas.
+geoadd tiendas 42.2 -8.7 "Caramba"
+geoadd tiendas 42.2 -8.5 "Froiz"
+geoadd tiendas 40.2 -8.5 "Museo"
+
+//2)Obtén la posición de una tienda.
+geoopos tiendas "Caramba"
+
+//3)Calcula la distancia entre dos tiendas.
+geodist tiendas "Caramba" "Froiz" KM
+
+//4)Busca tiendas cercanas a un punto dentro de un radio.
+georadius tiendas 42.2 -8.7 KM
+
+
+9. STREAMS
+Ejercicio: Registro de eventos
+//1)Añade varios eventos con usuario y acción.
+xadd eventos * caminar 2,5
+xadd eventos * saltar 100
+//2)Consulta todos los eventos almacenados.
+xrange eventos - +
