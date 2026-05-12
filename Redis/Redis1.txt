@@ -108,6 +108,9 @@ hlen user:1(solo el usuario 1)
 //incrementar un valor
 hincrby user:2 edad 2(le sumas dos años a Antonio)
 
+//comando que solo realizara una accionn si no existe
+hsetnx user:1 nombre "Juan" //solo añade el campo si no existe
+                            //Elemento fundamentala para no sobrescribir datos
 
 //--BITMAPS(TRABAJAR DIRECTAMENTE CON BITS)(PODEMOS CAMBIAR DE UNA ESTRUCTURA SUS BITS)--
 //Crear y añadir(se usa bit)
@@ -157,3 +160,23 @@ xadd estado_paciente:1 * latido 80 //varios pacientes
 
 //ver los elementos
 xrange estado_paciente - +(ya que trabajamos con ids y son numeros grandes) COUNT 10(limitas las apariciones de los eventos)
+
+//Ejecutar transacciones en cola
+//Si pones varias transacciones en cola se van guardando y al
+//ejecutar
+exec//se ejecutaran todas una detras de la otra
+
+
+//--TRANSACCIONES--
+//Sistemas de suscripciones
+//uno de los clientes se suscribe a canal1
+subscribe canal1
+//el otro puede publicar algo y el otro lo recibe
+//usuario uno publica
+publish canal1 "hola que tal"
+//usuario2 subscrito a canal1 recibe
+"hola que tal" //esta es una forma muy buena de mandar informacion de una manera mucho mas rapida
+               //sustituyendo a replace
+//si usuario dos se cansa de escuchar el canal1 se iria con
+CTRL+C
+
