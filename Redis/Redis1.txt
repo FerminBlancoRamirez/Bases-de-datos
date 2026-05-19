@@ -17,6 +17,7 @@ append nombre " Gonzalez"
 
 //crear variable temporal
 setex codigoFichaje 5(tiempo) "HJT6"(valor) // la clave solo existe en el sistema 5 segundo
+ttl codigoFichaje //veo cuanto tiempo de vida le queda a la variable
 
 //hacer que una variable fija caduque
 set precio 30 //creas la variable fija

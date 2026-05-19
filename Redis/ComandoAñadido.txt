@@ -1,0 +1,3 @@
+hsetnx: Fermin Blanco Ramirez
+//este comando evita sobrescribir elementos ya que solo lo crea si no existe.
+HSETNX usuario:100 email "juan@ejemplo.com"

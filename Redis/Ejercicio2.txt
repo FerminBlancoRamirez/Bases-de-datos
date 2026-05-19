@@ -1,0 +1,69 @@
+//Ejercicio 1:  Guarda tu nombre en Redis bajo la clave usuario:nombre y luego recupéralo.
+set usuario:nombre "Fermin"
+get usuario:nombre
+
+//Ejercicio 2:Guarda un token con tiempo de vida de 10 segundos y verifica cuánto tiempo le queda.
+setex comida 10 "Arroz"
+ttl comida
+
+//Ejercicio 3:Crea una lista llamada tareas y añade tres elementos: “estudiar”, “limpiar”, “comer”. Luego elimina el último. Muestra la lista por pantalla
+lpush tara "comer"
+lpush tara "ducharse"
+lpush tara "dormir"
+rpop tarea
+lrange tarea 0-1
+
+//Ejercicio 4:Guarda usuarios conectados hoy (usuarios:hoy) y ayer (usuarios:ayer) y obtén los que se conectaron ambos días. Pista: busca información del comando SINTER
+sadd usuarios:hoy "Ana"
+sadd usuarios:hoy "Rodrigo"
+sadd usuarios:ayer "Juan"
+sadd usuarios:ayer "Ana"
+sadd usuarios:ayer "Rodrigo"
+
+sinter usuarios:hoy usuarios:ayer
+
+//Ejercicio 5:Guarda en un hash la información de un producto (producto:1) con nombre, precio y stock.
+              //Muestra por pantalla ese producto
+hset producto:1 nombre "Manzana"
+hset producto:1 precio 2.5
+hset producto:1 stock 50
+
+hgetall producto:1
+
+//Ejercicio 6:Crea un ranking con los jugadores y sus puntuaciones. Luego, muestra los tres mejores.
+zadd ranking 100 "Juan"
+zadd ranking 98 "Pedro"
+zadd ranking 94 "Maria"
+zadd ranking 0 "Laura"
+zadd ranking 25 "Carlos"
+zadd ranking 75 "Sergio"
+
+zrange ranking 0 2
+
+//Ejercicio 7: Usa HyperLogLog para contar visitantes únicos de una web.
+pfadd usuarios(key) "Juan"
+pfadd usuarios(key) "Antonio"
+pfadd usuarios(key) "Antonio"
+pfadd usuarios(key) "Ana"
+
+pfcount usuarios
+
+//Ejercicio 8:Añade tres ciudades españolas con sus coordenadas y consulta las que estén a menos de 100 km de Madrid.
+geoadd ciudades 39.56,4.02 "Toledo"
+geoadd ciudades 40.56, 4.07 "Segovia"
+geoadd ciudades 40.28, 3.21 "Alcala de Henares"
+
+georadius ciudades 40.25 3.42 100
+
+//Ejercicio 9: Agrega eventos con temperatura a un stream llamado mediciones y recupera los últimos 5.
+xadd mediciones 100 latido 80
+xadd mediciones 101 glucosa 120
+xadd mediciones 102 frecuencia respiratoria 3
+
+xrange mediciones - + count 3
+
+//Ejercicio 10: Suscríbete a un canal llamado noticias y publica un mensaje.
+subscribe noticias
+publish noticias "Hola"
+
+//
